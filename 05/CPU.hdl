@@ -38,40 +38,40 @@ CHIP CPU {
         pc[15];          // address of next instruction
 
     PARTS:
-		// JUMP condition
-		Or(a=ng, b=zr, out=ngzr);			// ngzr = (ng|zr)
-		Not(in=ngzr, out=g);			    // g = out > 0 = !(ng|zr);  ng = out < 0;  zr = out = 0
-		And(a=ng, b=instruction[2], out=passLT);          // ngLT = (ng&LT)
-		And(a=zr, b=instruction[1], out=passEQ);          // zrEQ = (zr&EQ)
-		And(a=g,  b=instruction[0], out=passGT);          // gGT = (g&GT)
-		Or(a=passLT, b=passEQ, out=passLE);
-		Or(a=passLE, b=passGT, out=pass);
+    // JUMP condition
+    Or(a=ng, b=zr, out=ngzr);			// ngzr = (ng|zr)
+    Not(in=ngzr, out=g);			    // g = out > 0 = !(ng|zr);  ng = out < 0;  zr = out = 0
+    And(a=ng, b=instruction[2], out=passLT);          // ngLT = (ng&LT)
+    And(a=zr, b=instruction[1], out=passEQ);          // zrEQ = (zr&EQ)
+    And(a=g,  b=instruction[0], out=passGT);          // gGT = (g&GT)
+    Or(a=passLT, b=passEQ, out=passLE);
+    Or(a=passLE, b=passGT, out=pass);
 
-		And(a=instruction[15], b=pass, out=PCload); 			// PCload = I15&J
+    And(a=instruction[15], b=pass, out=PCload); 			// PCload = I15&J
 
-		// ALU
-		Mux16(a=Aout, b=inM, sel=instruction[12], out=AorM); // Mux ALU in : cAorM = I[12]
-		
+    // ALU
+    Mux16(a=Aout, b=inM, sel=instruction[12], out=AorM); // Mux ALU in : cAorM = I[12]
+    
     ALU(x=Dout, y=AorM, zx=instruction[11], nx=instruction[10], 
-		    zy=instruction[9], ny=instruction[8], f=instruction[7], no=instruction[6], 
-				out=ALUout, zr=zr, ng=ng);
-		
-	  PC(in=Aout, load=PCload, inc=true, reset=reset, out[0..14]=pc);
-		
-		// A register
-		Not(in=instruction[15], out=Ainstruction);
-		And(a=instruction[15], b=instruction[5], out=AluToA); // AluToA = I[15]&d1
-		Or(a=Ainstruction, b=AluToA, out=Aload);
-		
-		Mux16(a=instruction, b=ALUout, sel=AluToA, out=Ain); // sel=I[15]
-	  ARegister(in=Ain, load=Aload, out=Aout);
-		
-		// D register
-		And(a=instruction[15], b=instruction[4], out=Dload); // Aload = I[15]&d2
-	  DRegister(in=ALUout, load=Dload, out=Dout);
-		
-		// output
-		And16(a=Aout, b=Aout, out[0..14]=addressM);
-		And(a=instruction[15], b=instruction[3], out=writeM); // writeM = I[15] & d3
-		And16(a=ALUout, b=ALUout, out=outM);
+        zy=instruction[9], ny=instruction[8], f=instruction[7], no=instruction[6], 
+        out=ALUout, zr=zr, ng=ng);
+    
+    PC(in=Aout, load=PCload, inc=true, reset=reset, out[0..14]=pc);
+    
+    // A register
+    Not(in=instruction[15], out=Ainstruction);
+    And(a=instruction[15], b=instruction[5], out=AluToA); // AluToA = I[15]&d1
+    Or(a=Ainstruction, b=AluToA, out=Aload);
+    
+    Mux16(a=instruction, b=ALUout, sel=AluToA, out=Ain); // sel=I[15]
+    ARegister(in=Ain, load=Aload, out=Aout);
+    
+    // D register
+    And(a=instruction[15], b=instruction[4], out=Dload); // Aload = I[15]&d2
+    DRegister(in=ALUout, load=Dload, out=Dout);
+    
+    // output
+    And16(a=Aout, b=Aout, out[0..14]=addressM);
+    And(a=instruction[15], b=instruction[3], out=writeM); // writeM = I[15] & d3
+    And16(a=ALUout, b=ALUout, out=outM);
 }
