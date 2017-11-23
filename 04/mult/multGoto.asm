@@ -34,8 +34,6 @@ M=M-1
 
 // => exit1:
 (exit1)
-@exit1
-0;JMP
 //    }
     
 //     printf("R2=%d\n", R2);
