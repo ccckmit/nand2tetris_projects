@@ -2,7 +2,6 @@
 // and the book "The Elements of Computing Systems"
 // by Nisan and Schocken, MIT Press.
 // File name: projects/05/CPU.hdl
-
 /**
  * The Hack CPU (Central Processing unit), consisting of an ALU,
  * two registers named A and D, and a program counter named PC.
@@ -49,7 +48,7 @@ CHIP CPU {
 		Or(a=passLE, b=passGT, out=pass);
 
 		And(a=instruction[15], b=pass, out=PCload); 			// PCload = I15&J
-		
+
 		// ALU
 		Mux16(a=Aout, b=inM, sel=instruction[12], out=AorM); // Mux ALU in : cAorM = I[12]
 		
