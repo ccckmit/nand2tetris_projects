@@ -25,46 +25,6 @@
  * than to the address resulting from executing the current instruction. 
  */
 
- 
-
-/*		
-		Or(a=zr, b=EQ, out=ZrOrEQ);         // ZrOrEQ = (zr|EQ)
-		Not(in=ZrOrEQ, out=nZrEQ);          // notZrEQ = !(zr|EQ)
-		Or(a=ngLT, b=zrEQ, out=jLE);        // jLE = (ng&LT) or (zr&EQ)
-		Or(a=gGT, b=nZrEQ, out=jGZ);        // jGZ = (g&GT) or !(zr|EQ)
-		Or(a=sLE, b=sGZ, out=jPass);        // jPass = (ng&LT) or (zr&EQ) or (g&GT) or !(zr|EQ)
-		Or(a=JMP, b=sPass, out=j);          // j = (JMP or ((ng&LT) or (zr&EQ) or (g&GT) or !(zr|EQ))
-
-		Or(a=LT, b=EQ, out=LE); 					  // JL=JLE|JEQ = LT|EQ
-		Or(a=GT, b=EQ, out=GE); 					  // JG=JGT|JEQ = GT|EQ
-		Or(a=LE, b=GT, out=LGE);
-		And(a=LT, b=EQ, out=andLE);
-		And(a=andLE, b=GT, out=JMP); 				// JMP = j1&j2&j3
-		
-//		IRdecoder(ir=instruction, cAluOrI=cAluOrI, Aload=Aload +, Dload=Dload +, cAorM=cAorM+, zx=zx, nx=nx, zy=zy, ny=ny, f=f, no=no);
-    And(a=instruction[15], b=instruction[15], out=cAluOrI); // cAluOrI = I[15] 
-		// unused : I[14], I[13] 
-		And(a=instruction[12], b=instruction[12], out=cAorM);   // cAorM = a = instruction[12]
-		And(a=instruction[11], b=instruction[11], out=zx);      // zx = c1 = instruction[11] ?
-		And(a=instruction[10], b=instruction[10], out=nx);      // nx = c2 = instruction[10] ?
-		And(a=instruction[9], b=instruction[9], out=zy);        // zy = c3 = instruction[9]  ?
-		And(a=instruction[8], b=instruction[8], out=ny);        // ny = c4 = instruction[8]  ?
-		And(a=instruction[7], b=instruction[7], out=f);         // f  = c5 = instruction[7]  ?
-		And(a=instruction[6], b=instruction[6], out=no);        // no = c6 = instruction[6]  ?
-		And(a=instruction[5], b=instruction[5], out=Aload);     // Aload = d1 = instruction[5]
-		And(a=instruction[4], b=instruction[4], out=Dload);     // Dload = d2 = instruction[4]
-		And(a=instruction[3], b=instruction[3], out=Mload);     // Mload = d3 = instruction[3]
-		And(a=instruction[2], b=instruction[2], out=LT);        // j1= LT = instruction[2]
-		And(a=instruction[1], b=instruction[1], out=EQ);        // j2= EQ = instruction[1]
-		And(a=instruction[0], b=instruction[0], out=GT);        // j3= GT = instruction[0]
-*/		
-
-// CHIP IRdecoder {
-//  IN ir;
-//	OUT cAluoOrI, Aload, Dload, cAorM, cALU, zx, nx, zy, ny, f, no;
-// }
-
- 
 CHIP CPU {
 
     IN  inM[16],         // M value input  (M = contents of RAM[A])
