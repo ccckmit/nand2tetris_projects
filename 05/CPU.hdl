@@ -40,14 +40,15 @@ CHIP CPU {
     PARTS:
     // A register
     Not(in=instruction[15], out=isA);                     // isC = I15 ; isA = not I15
-    And(a=instruction[15], b=instruction[5], out=AluToA); // AluToA = isC & d1
+    Not(in=isA, out=isC);                     // isC = I15 ; isA = not I15
+    And(a=isC, b=instruction[5], out=AluToA); // AluToA = isC & d1
     Or(a=isA, b=AluToA, out=Aload);
     
     Mux16(a=instruction, b=ALUout, sel=AluToA, out=Ain); // sel=AluToA
     ARegister(in=Ain, load=Aload, out=Aout);
     
     // D register
-    And(a=instruction[15], b=instruction[4], out=Dload); // Dload = isC & d2
+    And(a=isC, b=instruction[4], out=Dload); // Dload = isC & d2
     DRegister(in=ALUout, load=Dload, out=Dout);
     
     // ALU
@@ -68,10 +69,10 @@ CHIP CPU {
     Or(a=passLT, b=passEQ, out=passLE);
     Or(a=passLE, b=passGT, out=pass);
 
-    And(a=instruction[15], b=pass, out=PCload); 			// PCload = isC & J
+    And(a=isC, b=pass, out=PCload); 			// PCload = isC & J
 
     // output
     And16(a=Aout, b=Aout, out[0..14]=addressM);
-    And(a=instruction[15], b=instruction[3], out=writeM); // writeM = isC & d3
+    And(a=isC, b=instruction[3], out=writeM); // writeM = isC & d3
     And16(a=ALUout, b=ALUout, out=outM);
 }
