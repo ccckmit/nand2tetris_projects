@@ -10,15 +10,35 @@
 
 // Put your code here.
 
+// --------------------------
+// 類似 Ｃ語言的高階寫法
 // forever
 //   arr = SCREEN
-//   for (i=0; i<8192; i++) {
+//   n = 8192
+//   i = 0
+//   while (i < n) {
 //     if (*KBD != 0)
 //       arr[i] = -1
 //     else
 //       arr[i] = 0
 //   }
-//   goto forever;
+// goto forever;
+// --------------------------
+// 類似 Ｃ語言的低階寫法
+// arr = SCREEN
+// n=8192
+// FOREVER:
+// loop:
+//   if (i==n) goto ENDLOOP
+//   if (*KBD != 0)
+//     RAM[arr+i] = -1
+//   else 
+//     RAM[arr+i] = 0
+//   i++
+// goto loop
+// ENDLOOP:
+// goto FOREVER
+// --------------------------
 
 (FOREVER)
 // arr = SCREEN
