@@ -54,7 +54,7 @@ CHIP ALU {
     Mux16(a=andxy, b=addxy, sel=f, out=o1); // if (f == 1)  set out = x + y else set out = x & y
     Not16(in=o1, out=noto1);
     
-    Mux16(a=o1, b=noto1, sel=no, out=o2);  // if (no == 1) set out = !out
+    Mux16(a=o1, b=noto1, sel=no, out=o2, out=out, out[15]=ng);  // if (no == 1) set out = !out
     
     // o2 就是 out, 但必須中間節點才能再次當作輸入，所以先用 o2。
     And16(a=o2, b=o2, out[0..7]=outLow, out[8..15]=outHigh); 
@@ -62,6 +62,6 @@ CHIP ALU {
     Or8Way(in=outHigh, out=orHigh);    // orHigh = Or(out[8..15]);
     Or(a=orLow, b=orHigh, out=notzr);  // nzr = Or(out[0..15]);
     Not(in=notzr, out=zr);             // zr = !nzr
-    And16(a=o2, b=o2, out[15]=ng);     // ng = out[15]
-    And16(a=o2, b=o2, out=out);
+    // And16(a=o2, b=o2, out[15]=ng);     // ng = out[15]
+    // And16(a=o2, b=o2, out=out);
 }
